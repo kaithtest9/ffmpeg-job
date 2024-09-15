@@ -56,6 +56,8 @@ def transcribe():
     for file in files:
         if file.endswith('.webm'):
             start = time.time()
+            cmd = 'ffmpeg -i ' + file + ' -vn -acodec pcm_s16le -ar 44100 -ac 2 /tmp/audio.wav'
+            print(cmd)
             output = subprocess.run('ffmpeg -i ' + file + ' -vn -acodec pcm_s16le -ar 44100 -ac 2 /tmp/audio.wav', shell=True, capture_output=True)
             print(f"Transcription time: {time.time() - start} seconds")
             stdout = output.stdout.decode('utf-8')
