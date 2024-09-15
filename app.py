@@ -86,7 +86,7 @@ def transcribe():
 def transcribe_mp4():
     files = os.listdir('/app')
     for file in files:
-        if file.endswith('.mp4'):
+        if file.endswith('.webm'):
             start = time.time()
             cmd = 'ffmpeg -i ' + file + ' -c:v copy -an /tmp/video.mp4'
             print(cmd)
