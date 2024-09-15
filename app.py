@@ -9,7 +9,8 @@ def home():
     return 'Hello, World!'
 
 @app.route('/download-audio')
-def download_audio(url):
+def download_audio():
+    url = request.args.get('url')
     output = subprocess.run('yt-dlp -x --audio-format wav -o "/tmp/%(title)s.%(ext)s" ' + url, shell=True, capture_output=True)
     stdout = output.stdout.decode('utf-8')
     stderr = output.stderr.decode('utf-8')
@@ -34,7 +35,8 @@ def get_size(start_path = '.'):
     return file_size
 
 @app.route('/download-video')
-def download_video(url):
+def download_video():
+    url = request.args.get('url')
     output = subprocess.run('yt-dlp -o "/tmp/%(title)s.%(ext)s" ' + url, shell=True, capture_output=True)
     stdout = output.stdout.decode('utf-8')
     stderr = output.stderr.decode('utf-8')
