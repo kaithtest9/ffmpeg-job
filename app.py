@@ -62,10 +62,23 @@ def transcribe():
             print(f"Transcription time: {time.time() - start} seconds")
             stdout = output.stdout.decode('utf-8')
             stderr = output.stderr.decode('utf-8')
+
+            # get file size
+            filesize = get_size('/tmp/audio.wav')
+
+            # get audio info
+            audio_info = subprocess.run('ffprobe -i /tmp/audio.wav -show_streams -select_streams a:0', shell=True, capture_output=True)
+            audio_info_stdout = audio_info.stdout.decode('utf-8')
+            audio_info_stderr = audio_info.stderr.decode('utf-8')
+
+
             return jsonify({
                 'stdout': stdout,
                 'stderr': stderr,
-                'transcription_time': time.time() - start
+                'transcription_time': time.time() - start,
+                'filesize': filesize,
+                'audio_info': audio_info_stdout,
+                'audio_info_stderr': audio_info_stderr,
             })
 
 
