@@ -130,7 +130,7 @@ def download_file(url):
     return local_filename
 
 @app.route('/transcribe-video-avi')
-def transcribe_mp4():
+def transcribe_avi():
     # download video
 
     start = time.time()
