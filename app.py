@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 import subprocess
 import os
+import time
 
 app = Flask(__name__)
 
@@ -48,6 +49,23 @@ def download_video():
         'stderr': stderr,
         'filesize': filesize
     })
+
+@app.route('/transcribe-video')
+def transcribe():
+    files = os.listdir('/app')
+    for file in files:
+        if file.endswith('.webm'):
+            start = time.time()
+            output = subprocess.run('ffmpeg -i ' + file + ' -vn -acodec pcm_s16le -ar 44100 -ac 2 /tmp/audio.wav', shell=True, capture_output=True)
+            print(f"Transcription time: {time.time() - start} seconds")
+            stdout = output.stdout.decode('utf-8')
+            stderr = output.stderr.decode('utf-8')
+            return jsonify({
+                'stdout': stdout,
+                'stderr': stderr,
+                'transcription_time': time.time() - start
+            })
+
 
 @app.route('/transcript')
 def transcript():
