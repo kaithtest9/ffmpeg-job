@@ -80,6 +80,38 @@ def transcribe():
                 'audio_info': audio_info_stdout,
                 'audio_info_stderr': audio_info_stderr,
             })
+        
+
+@app.route('/transcribe-video-mp4')
+def transcribe_mp4():
+    files = os.listdir('/app')
+    for file in files:
+        if file.endswith('.mp4'):
+            start = time.time()
+            cmd = 'ffmpeg -i ' + file + ' -c:v copy -an /tmp/video.mp4'
+            print(cmd)
+            output = subprocess.run('ffmpeg -i ' + file + ' -c:v copy -an /tmp/video.mp4', shell=True, capture_output=True)
+            print(f"Transcription time: {time.time() - start} seconds")
+            stdout = output.stdout.decode('utf-8')
+            stderr = output.stderr.decode('utf-8')
+
+            # get file size
+            filesize = get_size('/tmp/video.mp4')
+
+            # get audio info
+            audio_info = subprocess.run('ffprobe -i /tmp/video.mp4 -show_streams -select_streams a:0', shell=True, capture_output=True)
+            audio_info_stdout = audio_info.stdout.decode('utf-8')
+            audio_info_stderr = audio_info.stderr.decode('utf-8')
+
+
+            return jsonify({
+                'stdout': stdout,
+                'stderr': stderr,
+                'transcription_time': time.time() - start,
+                'filesize': filesize,
+                'audio_info': audio_info_stdout,
+                'audio_info_stderr': audio_info_stderr,
+            })
 
 
 @app.route('/transcript')
