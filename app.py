@@ -64,7 +64,7 @@ def transcribe():
             stderr = output.stderr.decode('utf-8')
 
             # get file size
-            filesize = get_size('/tmp/audio.wav')
+            filesize = get_size('/tmp')
 
             # get audio info
             audio_info = subprocess.run('ffprobe -i /tmp/audio.wav -show_streams -select_streams a:0', shell=True, capture_output=True)
@@ -96,7 +96,7 @@ def transcribe_mp4():
             stderr = output.stderr.decode('utf-8')
 
             # get file size
-            filesize = get_size('/tmp/video.mp4')
+            filesize = get_size('/tmp')
 
             # get audio info
             audio_info = subprocess.run('ffprobe -i /tmp/video.mp4 -show_streams -select_streams a:0', shell=True, capture_output=True)
