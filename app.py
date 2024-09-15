@@ -127,6 +127,7 @@ def download_file(url):
                 # and set chunk_size parameter to None.
                 #if chunk: 
                 f.write(chunk)
+    print("filename", local_filename)
     return local_filename
 
 @app.route('/transcribe-video-avi')
@@ -140,6 +141,7 @@ def transcribe_avi():
     files = os.listdir('/tmp')
     for file in files:
         if file.endswith('.avi'):
+            file = os.path.join('/tmp', file)
             start = time.time()
             cmd = 'ffmpeg -i ' + file + ' -c:v copy -an /tmp/video_avi.mp4'
             print(cmd)
